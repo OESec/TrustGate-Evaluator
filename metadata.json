@@ -1,0 +1,5 @@
+{
+  "name": "TrustGate Evaluator",
+  "description": "A sleek, AI-powered tool for IT administrators to rapidly evaluate domain whitelist requests against strict security and business criteria.",
+  "requestFramePermissions": []
+}
