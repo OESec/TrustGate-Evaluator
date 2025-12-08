@@ -76,44 +76,19 @@
           size: landscape;
         }
         
-        /* Force Reset to Light Mode for Print */
-        body, #root, .dark, [class*="bg-zinc-"], [class*="text-zinc-"] {
-          background-color: white !important;
-          color: black !important;
-          -webkit-print-color-adjust: exact !important;
-          print-color-adjust: exact !important;
-        }
-
-        /* Specific overrides for manual theme classes in App.tsx */
-        .text-zinc-200, .text-zinc-300, .text-zinc-400, .text-zinc-500 {
-          color: black !important;
-        }
-
-        /* Override specific Tailwind Dark Mode Classes */
-        .dark\:bg-zinc-900, .dark\:bg-zinc-950, .dark\:bg-zinc-800, .bg-zinc-950, .bg-zinc-900 {
-          background-color: white !important;
-        }
-        
-        .dark\:text-white, .dark\:text-zinc-100, .dark\:text-zinc-200, .dark\:text-zinc-300, .dark\:text-zinc-400 {
-          color: black !important;
-        }
-        
-        .dark\:border-zinc-700, .dark\:border-zinc-800, .border-zinc-800 {
-           border-color: #e5e7eb !important;
-        }
-
         /* Hide Navigation, Buttons, and Background Blobs */
         nav, button, .no-print, .animate-blob, .fixed.inset-0 {
           display: none !important;
         }
 
-        /* Expand layout */
+        /* Expand layout to full width */
         .max-w-6xl, .max-w-4xl, .max-w-2xl {
           max-width: 100% !important;
           width: 100% !important;
           padding: 0 !important;
           margin: 0 !important;
           box-shadow: none !important;
+          border: none !important;
         }
         
         /* Ensure table visibility */
@@ -121,12 +96,10 @@
           overflow: visible !important;
         }
 
-        /* CRITICAL: Force animations to complete state for print visibility */
-        .animate-in, .fade-in, .slide-in-from-bottom-4, * {
-          animation: none !important;
-          opacity: 1 !important;
-          transform: none !important;
-          transition: none !important;
+        /* Ensure clean white background regardless of JS timing */
+        body {
+            background-color: white !important;
+            color: black !important;
         }
       }
     </style>

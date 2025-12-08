@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import InputForm from './components/InputForm';
 import ResultsView from './components/ResultsView';
@@ -124,6 +123,29 @@ const App: React.FC = () => {
     } else {
       document.documentElement.classList.remove('dark');
     }
+  }, [isDark]);
+
+  // Handle Print Events to force Light Mode
+  useEffect(() => {
+    const handleBeforePrint = () => {
+      // Force light mode for print
+      document.documentElement.classList.remove('dark');
+    };
+
+    const handleAfterPrint = () => {
+      // Restore dark mode if it was enabled
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      }
+    };
+
+    window.addEventListener('beforeprint', handleBeforePrint);
+    window.addEventListener('afterprint', handleAfterPrint);
+
+    return () => {
+      window.removeEventListener('beforeprint', handleBeforePrint);
+      window.removeEventListener('afterprint', handleAfterPrint);
+    };
   }, [isDark]);
 
   // Persist policy changes
