@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   CheckCircle2, 
@@ -20,7 +19,9 @@ import {
   Eye,
   Zap,
   GitFork,
-  HelpCircle
+  HelpCircle,
+  Download,
+  Printer
 } from 'lucide-react';
 import { EvaluationResponse, Verdict, EvaluationStatus } from '../types';
 
@@ -80,8 +81,43 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data, onReset }) => {
     window.open(`https://www.ssllabs.com/ssltest/analyze.html?d=${data.domain}`, '_blank');
   };
 
-  const handleExport = () => {
+  const handlePrint = () => {
     window.print();
+  };
+
+  const handleDownloadReport = () => {
+    const reportContent = `
+TRUSTGATE SECURITY EVALUATION REPORT
+================================================================================
+Generated: ${new Date(data.timestamp).toLocaleString()}
+Domain:    ${data.domain}
+
+EVALUATION RESULTS
+--------------------------------------------------------------------------------
+Verdict:     ${data.verdict}
+Risk Score:  ${data.riskScore}/100
+Summary:     ${data.summary}
+
+CRITERIA BREAKDOWN
+--------------------------------------------------------------------------------
+${data.criteria.map((c, i) => `
+${i + 1}. ${c.name.toUpperCase()}
+   Status:  ${c.status}
+   Weight:  ${c.weight}%
+   Reason:  ${c.reason}
+`).join('\n')}
+--------------------------------------------------------------------------------
+© TrustGate Security Systems
+`.trim();
+
+    const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `TrustGate_Report_${data.domain.replace(/[^a-z0-9]/gi, '_')}_${new Date().toISOString().slice(0,10)}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -193,7 +229,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data, onReset }) => {
         </div>
       </div>
 
-      <div className="mt-8 pt-8 border-t border-zinc-200 dark:border-zinc-800 flex justify-end gap-4">
+      <div className="mt-8 pt-8 border-t border-zinc-200 dark:border-zinc-800 flex flex-wrap justify-end gap-4">
         <button 
           onClick={handleWhois}
           className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white text-sm font-medium transition-colors flex items-center gap-2"
@@ -206,11 +242,18 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data, onReset }) => {
         >
           <Lock className="w-4 h-4" /> SSL Verify
         </button>
-         <button 
-           onClick={handleExport}
-           className="text-cyan-600 hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300 text-sm font-medium transition-colors flex items-center gap-2"
+        <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800 mx-2 hidden sm:block"></div>
+        <button 
+           onClick={handlePrint}
+           className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white text-sm font-medium transition-colors flex items-center gap-2"
          >
-          <Share2 className="w-4 h-4" /> Export Report
+          <Printer className="w-4 h-4" /> Print View
+        </button>
+         <button 
+           onClick={handleDownloadReport}
+           className="text-cyan-600 hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300 text-sm font-bold transition-colors flex items-center gap-2 bg-cyan-50 dark:bg-cyan-900/20 px-3 py-1.5 rounded-lg border border-cyan-100 dark:border-cyan-800/50"
+         >
+          <Download className="w-4 h-4" /> Export Report
         </button>
       </div>
     </div>
