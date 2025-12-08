@@ -37,7 +37,7 @@ export interface EvaluateRequest {
   justificationType: string;
   alternativeSolutions: string;
   securityBlockStatus: string;
-  domainReputation: number;
+  domainReputation?: number;
   virusTotal: {
     maliciousCount: number;
     totalEngines: number;

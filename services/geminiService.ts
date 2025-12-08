@@ -58,7 +58,7 @@ export const evaluateDomain = async (request: EvaluateRequest, policyCriteria: P
     - Business Justification: "${request.justification}"
     - Alternative Solutions Check: "${request.alternativeSolutions}"
     - Existing Security Block Logs: "${request.securityBlockStatus}"
-    - Domain Reputation Score (User Provided): ${request.domainReputation}/100
+    - Domain Reputation Score (User Provided): ${request.domainReputation !== undefined ? request.domainReputation + '/100' : 'Not Provided/Unknown'}
     - VirusTotal Analysis: ${request.virusTotal.maliciousCount} malicious vendors out of ${request.virusTotal.totalEngines} total engines.
     - VirusTotal Computed Score: ${request.virusTotalScore !== undefined ? request.virusTotalScore + '%' : 'N/A'}.
 

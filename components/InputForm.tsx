@@ -34,7 +34,7 @@ const InputForm: React.FC<InputFormProps> = ({ onEvaluate, isLoading }) => {
         justificationType,
         alternativeSolutions,
         securityBlockStatus,
-        domainReputation: Number(domainReputation),
+        domainReputation: domainReputation ? Number(domainReputation) : undefined,
         virusTotal: {
           maliciousCount: Number(vtMalicious) || 0,
           totalEngines: Number(vtTotal) || 0
@@ -124,9 +124,8 @@ const InputForm: React.FC<InputFormProps> = ({ onEvaluate, isLoading }) => {
                   max="100"
                   value={domainReputation}
                   onChange={(e) => setDomainReputation(e.target.value)}
-                  placeholder="e.g. 85"
+                  placeholder="e.g. 85 (Optional)"
                   className={getInputClass()}
-                  required
                 />
              </div>
           </div>
@@ -274,7 +273,7 @@ const InputForm: React.FC<InputFormProps> = ({ onEvaluate, isLoading }) => {
 
           <button
             type="submit"
-            disabled={isLoading || !domain || !department || !justificationType || !alternativeSolutions || !securityBlockStatus || !domainReputation || !vtTotal}
+            disabled={isLoading || !domain || !department || !justificationType || !alternativeSolutions || !securityBlockStatus || !vtTotal}
             className={`w-full flex items-center justify-center gap-2 bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold py-3 rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed ${isLoading ? 'animate-pulse' : ''}`}
           >
             {isLoading ? (
