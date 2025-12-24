@@ -20,19 +20,6 @@ const initialCriteria: PolicyCriterion[] = [
     ]
   },
   {
-    id: 2,
-    title: "User/Role Authorisation Level",
-    weight: 10,
-    description: "Evaluates whether the requesting user has the appropriate authorisation level and legitimate need-to-know for accessing the requested content type.",
-    icon: "Lock",
-    options: [
-      { label: "Authorised role with appropriate access level", score: 100 },
-      { label: "Authorised role but elevated access needed", score: 70 },
-      { label: "Limited authorisation for requested content", score: 40 },
-      { label: "Insufficient authorisation level", score: 0 }
-    ]
-  },
-  {
     id: 3,
     title: "Alternative Solutions Available",
     weight: 10,
@@ -77,10 +64,8 @@ const initialCriteria: PolicyCriterion[] = [
     description: "Evaluates whether there is a legitimate business need for accessing this website. Strong business justification is essential for whitelisting requests.",
     icon: "Briefcase",
     options: [
-      { label: "Critical business need", score: 100 },
-      { label: "Important business need", score: 80 },
-      { label: "Minor business benefit", score: 40 },
-      { label: "No clear business justification", score: 0 }
+      { label: "Yes, Business Justification(s) provided", score: 100 },
+      { label: "No, Business Justification(s) NOT provided", score: 0 }
     ]
   },
   {
@@ -94,6 +79,18 @@ const initialCriteria: PolicyCriterion[] = [
       { label: "Suspicious (1-2 vendors)", score: 50 },
       { label: "Malicious (3+ vendors)", score: 0 }
     ]
+  },
+  {
+    id: 8,
+    title: "Blocked due to unwanted category reasons?",
+    weight: 10,
+    description: "URL does not fit into implicitly blocked categories e.g. weapons.",
+    icon: "AlertTriangle",
+    options: [
+      { label: "Safe category", score: 100 },
+      { label: "Questionable category", score: 50 },
+      { label: "Blocked/Unwanted category", score: 0 }
+    ]
   }
 ];
 
@@ -106,10 +103,10 @@ const App: React.FC = () => {
   // Theme state
   const [isDark, setIsDark] = useState(true);
 
-  // Policy State with Persistence
+  // Policy State with Persistence (Incremented version to v3)
   const [policyItems, setPolicyItems] = useState<PolicyCriterion[]>(() => {
     try {
-      const saved = localStorage.getItem('trustgate_policy_criteria');
+      const saved = localStorage.getItem('trustgate_policy_criteria_v3');
       return saved ? JSON.parse(saved) : initialCriteria;
     } catch (e) {
       return initialCriteria;
@@ -150,7 +147,7 @@ const App: React.FC = () => {
 
   // Persist policy changes
   useEffect(() => {
-    localStorage.setItem('trustgate_policy_criteria', JSON.stringify(policyItems));
+    localStorage.setItem('trustgate_policy_criteria_v3', JSON.stringify(policyItems));
   }, [policyItems]);
 
   const toggleTheme = () => setIsDark(!isDark);
