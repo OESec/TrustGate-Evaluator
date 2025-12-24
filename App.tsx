@@ -26,10 +26,8 @@ const initialCriteria: PolicyCriterion[] = [
     description: "Assesses whether there are safer alternative methods to achieve the same business objective without whitelisting the potentially risky website.",
     icon: "GitFork",
     options: [
-      { label: "No viable alternatives exist", score: 100 },
-      { label: "Alternatives exist but significantly less efficient", score: 75 },
-      { label: "Reasonable alternatives available", score: 30 },
-      { label: "Multiple safer alternatives readily available", score: 0 }
+      { label: "Alternative Solution(s) NOT available", score: 100 },
+      { label: "Alternative Solution(s) available", score: 0 }
     ]
   },
   {
@@ -39,8 +37,7 @@ const initialCriteria: PolicyCriterion[] = [
     description: "Assesses whether the website appears to have been incorrectly categorized or blocked by automated systems.",
     icon: "HelpCircle",
     options: [
-      { label: "Yes, clearly misclassified", score: 100 },
-      { label: "Possibly misclassified", score: 70 },
+      { label: "Clearly misclassified", score: 100 },
       { label: "Correctly classified", score: 0 }
     ]
   },
@@ -64,8 +61,8 @@ const initialCriteria: PolicyCriterion[] = [
     description: "Evaluates whether there is a legitimate business need for accessing this website. Strong business justification is essential for whitelisting requests.",
     icon: "Briefcase",
     options: [
-      { label: "Yes, Business Justification(s) provided", score: 100 },
-      { label: "No, Business Justification(s) NOT provided", score: 0 }
+      { label: "Business Justification(s) provided", score: 100 },
+      { label: "Business Justification(s) NOT provided", score: 0 }
     ]
   },
   {
@@ -103,10 +100,10 @@ const App: React.FC = () => {
   // Theme state
   const [isDark, setIsDark] = useState(true);
 
-  // Policy State with Persistence (Incremented version to v3)
+  // Policy State with Persistence (Incremented version to v6)
   const [policyItems, setPolicyItems] = useState<PolicyCriterion[]>(() => {
     try {
-      const saved = localStorage.getItem('trustgate_policy_criteria_v3');
+      const saved = localStorage.getItem('trustgate_policy_criteria_v6');
       return saved ? JSON.parse(saved) : initialCriteria;
     } catch (e) {
       return initialCriteria;
@@ -147,7 +144,7 @@ const App: React.FC = () => {
 
   // Persist policy changes
   useEffect(() => {
-    localStorage.setItem('trustgate_policy_criteria_v3', JSON.stringify(policyItems));
+    localStorage.setItem('trustgate_policy_criteria_v6', JSON.stringify(policyItems));
   }, [policyItems]);
 
   const toggleTheme = () => setIsDark(!isDark);
