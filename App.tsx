@@ -9,9 +9,9 @@ import { ShieldCheck, LayoutDashboard, FileText, Activity, Moon, Sun } from 'luc
 const initialCriteria: PolicyCriterion[] = [
   {
     id: 1,
-    title: "Approved by user's manager",
+    title: "Approved by user's manager?",
     isMandatory: true,
-    weight: 10,
+    weight: 15,
     description: "Indicates whether the user's direct manager or supervisor has approved this website access request. Manager approval provides an additional layer of oversight.",
     icon: "UserCheck",
     options: [
@@ -21,8 +21,8 @@ const initialCriteria: PolicyCriterion[] = [
   },
   {
     id: 3,
-    title: "Alternative Solutions Available",
-    weight: 10,
+    title: "Alternative Solutions Available?",
+    weight: 15,
     description: "Assesses whether there are safer alternative methods to achieve the same business objective without whitelisting the potentially risky website.",
     icon: "GitFork",
     options: [
@@ -32,8 +32,8 @@ const initialCriteria: PolicyCriterion[] = [
   },
   {
     id: 4,
-    title: "Probably misclassified",
-    weight: 15,
+    title: "Probably misclassified?",
+    weight: 5,
     description: "Assesses whether the website appears to have been incorrectly categorized or blocked by automated systems.",
     icon: "HelpCircle",
     options: [
@@ -85,7 +85,7 @@ const initialCriteria: PolicyCriterion[] = [
     icon: "AlertTriangle",
     options: [
       { label: "Safe category", score: 100 },
-      { label: "Questionable category", score: 50 },
+      { label: "Unclear", score: 50 },
       { label: "Blocked/Unwanted category", score: 0 }
     ]
   }
@@ -100,10 +100,10 @@ const App: React.FC = () => {
   // Theme state
   const [isDark, setIsDark] = useState(true);
 
-  // Policy State with Persistence (Incremented version to v6)
+  // Policy State with Persistence (Incremented version to v9)
   const [policyItems, setPolicyItems] = useState<PolicyCriterion[]>(() => {
     try {
-      const saved = localStorage.getItem('trustgate_policy_criteria_v6');
+      const saved = localStorage.getItem('trustgate_policy_criteria_v9');
       return saved ? JSON.parse(saved) : initialCriteria;
     } catch (e) {
       return initialCriteria;
@@ -144,7 +144,7 @@ const App: React.FC = () => {
 
   // Persist policy changes
   useEffect(() => {
-    localStorage.setItem('trustgate_policy_criteria_v6', JSON.stringify(policyItems));
+    localStorage.setItem('trustgate_policy_criteria_v9', JSON.stringify(policyItems));
   }, [policyItems]);
 
   const toggleTheme = () => setIsDark(!isDark);
